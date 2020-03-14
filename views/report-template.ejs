@@ -12,23 +12,28 @@
     <title>Reporte</title>
   </head>
   <body>
-    <h1>Reporte General PDF</h1>
-    <table class="table">
-        <thead>
+    <table class="table table-striped table-bordered">   
+        <thead >        
           <tr>
-            <th>nombre</th>
-            <th>categoria</th>
+            <th scope="col">#</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Categoria</th>
           </tr>
+        
         </thead>
+   
         <tbody>
             <% for( let i = 0; i < result.length; i++ ) { %>
-          <tr class="table-secondary">
-            
-                <td><%- result[i].nombre%></td>
-                <td><%- result[i].categoria%></td>            
-                
-          </tr>
-          <% } %> 
+                <tr>
+                  
+                     <th><%- i+1%></th>
+                    <td><%-result[i].nombre%></td>
+                    <td><%-result[i].categoria%></td>
+                   
+                  </tr>
+            <% } %>
+         
+         
         </tbody>
       </table>
       

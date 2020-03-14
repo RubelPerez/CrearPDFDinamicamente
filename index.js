@@ -27,31 +27,29 @@ app.use('/', routes() );
 
   con.connect(function(err) {
   if (err) throw err;
-  con.query("select * from proyectos as pro join categoria as cat on pro.id=cat.id_proyectos ", function (err, result) {
-  app.get("/generateReport", (req, res) => {
+  con.query("select * from proyectos as pro join categoria as cat on pro.id=cat.id_proyectos", function (err, result) {
+ 
+    console.log("se ejecutan las opciones");
+    app.get("/generateReport", (req, res) => {
     ejs.renderFile(path.join(__dirname, './views/', "report-template.ejs"), {result: result}, (err, data) => {
     if (err) {
           res.send(err);
     } else {
         let options = {
-            "height": "11.25in",
-            "width": "8.5in",
-            "header": {
-                "height": "20mm",
-            },
-            "footer": {
-                "height": "20mm",
-            },
-        };
-        pdf.create(data, options).toFile("report.pdf", function (err, data) {
-            if (err) return console.log(err);
-        var file= 'report.pdf';
-        fs.readFile(file,function(err,data){
-            res.contentType("application/pdf");
-            res.send(data);
-            fs.unlinkSync('report.pdf')
-
-        });
+            "format": "Letter",        // allowed units: A3, A4, A5, Legal, Letter, Tabloid
+     "orientation": "portrait", // portrait or landscape
+ 
+            "border": {
+                "top": "1cm",            // default is 0, units: mm, cm, in, px
+                "right": "1mm",
+                "bottom": "1cm",
+                "left": "1.5mm"
+              },   
+        }
+        pdf.create(data,options).toBuffer(function (err, buffer) {
+            if (err) return res.send(err);
+            res.type('pdf');
+            res.end(buffer, 'binary');
         });
     }
 });
