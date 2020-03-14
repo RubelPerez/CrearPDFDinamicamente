@@ -27,7 +27,6 @@ app.use('/', routes() );
 
   con.connect(function(err) {
   if (err) throw err;
-  console.log("Connected!");
   con.query("select * from proyectos as pro join categoria as cat on pro.id=cat.id_proyectos ", function (err, result) {
   app.get("/generateReport", (req, res) => {
     ejs.renderFile(path.join(__dirname, './views/', "report-template.ejs"), {result: result}, (err, data) => {
@@ -38,7 +37,7 @@ app.use('/', routes() );
             "height": "11.25in",
             "width": "8.5in",
             "header": {
-                "height": "20mm"
+                "height": "20mm",
             },
             "footer": {
                 "height": "20mm",
@@ -46,7 +45,6 @@ app.use('/', routes() );
         };
         pdf.create(data, options).toFile("report.pdf", function (err, data) {
             if (err) return console.log(err);
-        console.log(res);
         var file= 'report.pdf';
         fs.readFile(file,function(err,data){
             res.contentType("application/pdf");

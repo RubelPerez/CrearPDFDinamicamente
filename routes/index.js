@@ -9,10 +9,7 @@ const ProyectoController = require ('../controllers/ProyectoController');
 //modificar aqui para enrutar
 module.exports = function()
 {  //lo que este en el get se mostrara en el exports.proyectosHome
-    var date = new Date();
-    var dia = date.getDay();
-    var mes = date.getMonth()+1;
-    var anio = date.getFullYear();
+   
     router.get('/', ProyectoController.proyectosHome );
     router.get('/Report-template');
     return router;
