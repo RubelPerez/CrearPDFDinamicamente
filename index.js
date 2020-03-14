@@ -28,9 +28,7 @@ app.use('/', routes() );
   con.connect(function(err) {
   if (err) throw err;
   con.query("select * from proyectos as pro join categoria as cat on pro.id=cat.id_proyectos", function (err, result) {
- 
-    console.log("se ejecutan las opciones");
-    app.get("/generateReport", (req, res) => {
+    app.get("/MiPDF", (req, res) => {
     ejs.renderFile(path.join(__dirname, './views/', "report-template.ejs"), {result: result}, (err, data) => {
     if (err) {
           res.send(err);

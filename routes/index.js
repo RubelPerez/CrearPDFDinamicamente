@@ -11,6 +11,5 @@ module.exports = function()
 {  //lo que este en el get se mostrara en el exports.proyectosHome
    
     router.get('/', ProyectoController.proyectosHome );
-    router.get('/Report-template');
     return router;
 }
