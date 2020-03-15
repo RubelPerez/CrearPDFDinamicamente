@@ -5,10 +5,8 @@ let ejs = require("ejs");
 let pdf = require("html-pdf");
 var mysql = require('mysql');
 var fs = require('fs');
-
+const knex = require('knex')(require('./config/db.js'))
 //conexion dbs
-
-
 const app = express();
 const bodyParser = require('body-parser');
 app.use(express.static('public'));
@@ -18,24 +16,20 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use('/', routes() );
 //views
   // Parámetros de conexión a la base de datos.
-  var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database : 'tasker'
-  });
 
-  con.connect(function(err) {
-  if (err) throw err;
-  con.query("select * from proyectos as pro join categoria as cat on pro.id=cat.id_proyectos", function (err, result) {
-    app.get("/MiPDF", (req, res) => {
-    ejs.renderFile(path.join(__dirname, './views/', "report-template.ejs"), {result: result}, (err, data) => {
+  knex.select()
+    .from('proyectos')
+    .then(function(result){
+     app.get("/MiPDF", (req, res) => {
+    ejs.renderFile(path.join(__dirname, './views/', "report-template.ejs"), {
+      result: result,
+    }, (err, data) => {
     if (err) {
           res.send(err);
     } else {
         let options = {
             "format": "Letter",        // allowed units: A3, A4, A5, Legal, Letter, Tabloid
-     "orientation": "portrait", // portrait or landscape
+           "orientation": "portrait", // portrait or landscape
  
             "border": {
                 "top": "1cm",            // default is 0, units: mm, cm, in, px
@@ -51,7 +45,6 @@ app.use('/', routes() );
         });
     }
 });
-})
 })
 })
 
